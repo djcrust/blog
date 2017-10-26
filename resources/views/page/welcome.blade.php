@@ -19,35 +19,17 @@
     <div class="row">
         <div class="col-md-8">
 
-            <div class="post">
-                <h3>Post Title</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum cupiditate impedit mollitia neque nostrum odio odit pariatur quam sapiente, ullam. Accusantium vitae, voluptate. Ad earum fugiat labore, quis tempora voluptatem.</p>
-                <a herf="#" class="btn btn-primary">Read more</a>
-            </div>
-
-            <hr>
+            @foreach($posts as $post)
 
             <div class="post">
-                <h3>Post Title</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum cupiditate impedit mollitia neque nostrum odio odit pariatur quam sapiente, ullam. Accusantium vitae, voluptate. Ad earum fugiat labore, quis tempora voluptatem.</p>
-                <a herf="#" class="btn btn-primary">Read more</a>
+                <h3>{{ $post->title }}</h3>
+                    <p>{{ $post->body }}</p>
+                <a href="{{ url('blog/'.$post->slug) }}" class="btn btn-primary">Read more</a>
             </div>
 
-            <hr>
 
-            <div class="post">
-                <h3>Post Title</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum cupiditate impedit mollitia neque nostrum odio odit pariatur quam sapiente, ullam. Accusantium vitae, voluptate. Ad earum fugiat labore, quis tempora voluptatem.</p>
-                <a herf="#" class="btn btn-primary">Read more</a>
-            </div>
 
-            <hr>
-
-            <div class="post">
-                <h3>Post Title</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum cupiditate impedit mollitia neque nostrum odio odit pariatur quam sapiente, ullam. Accusantium vitae, voluptate. Ad earum fugiat labore, quis tempora voluptatem.</p>
-                <a herf="#" class="btn btn-primary">Read more</a>
-            </div>
+                @endforeach
 
         </div>
 

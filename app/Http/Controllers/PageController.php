@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
 
     public function Index(){
-        return view('page.welcome');
+
+        $posts = Post::orderBy('created_at')->limit(4)->get();
+
+        return view('page.welcome',compact('posts'));
     }
 
     public function getAbout()

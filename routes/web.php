@@ -11,10 +11,14 @@
 |
 */
 
-Route::get('/','PageController@Index');
-Route::get('about','PageController@getAbout');
-Route::get('contact','PageController@getContact');
+Route::group(['middleware'=>['web']],function (){
 
-//Route::get('posts/create','PostController@create');
+    Route::get('blog/{slug}',['as' => 'blog.single','uses' => 'BlogController@getSingle']);
 
-Route::resource('posts','PostController');
+    Route::get('blog',['uses' => 'BlogController@getIndex', 'as' => 'blog.index']);
+
+    Route::get('/','PageController@Index');
+    Route::get('about','PageController@getAbout');
+    Route::get('contact','PageController@getContact');
+    Route::resource('posts','PostController');
+});
