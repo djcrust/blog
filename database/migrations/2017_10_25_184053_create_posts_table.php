@@ -16,7 +16,7 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->text('content')->nullable();
+            $table->text('body');
             $table->timestamps();
         });
     }
@@ -28,8 +28,6 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            Schema::drop(posts);
-        });
+        Schema::dropIfExists('posts');
     }
 }

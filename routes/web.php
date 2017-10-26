@@ -11,8 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','PageController@Index');
+Route::get('about','PageController@getAbout');
+Route::get('contact','PageController@getContact');
 
+//Route::get('posts/create','PostController@create');
 
+Route::resource('posts','PostController');
