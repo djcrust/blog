@@ -58,7 +58,7 @@ class CategoryController extends Controller
 
         if($request->ajax()){
             $category = Category::find($request->id);
-            $category->destroy;
+            $category->delete();
             return response()->json(['data' => 'Category has been deleted with successfully!']);
         }
 

@@ -90,8 +90,23 @@
 
         $('.btn-edit').on('click',function () {
             //alert($(this).data('id'));
+            //alert($(this).closest('tr').attr('id'));
+        })
 
-            alert($(this).closest('tr').attr('id'));
+        $('.btn-delete').on('click',function () {
+            var nid = $(this).data('id');
+            var $tr = $(this).closest('tr');
+            $.ajax({
+                type: 'POST',
+                url: 'api/deleteCategory',
+                data:{id:nid},
+                success:function (data) {
+                    $tr.find('td,th').fadeOut(1000,function () {
+                        $tr.remove;
+                    })
+                }
+            })
+
         })
 
         $('#frmCategory').submit(function(event) {

@@ -20,4 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('getUpdatedata','CategoryController@getSavedata') -> name('getUpdatedata');
 Route::post('createCategory','CategoryController@createCategory') -> name('createCategory');
 Route::post('newUpdatedata','CategoryController@newUpdatedata') -> name('newUpdatedata');
+Route::post('deleteCategory','CategoryController@deleteCategory') -> name('deleteCategory');
 Route::get('getListcategory', 'CategoryController@getListcategory') -> name('getListcategory');
