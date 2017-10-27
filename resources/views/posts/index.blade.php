@@ -13,6 +13,7 @@
             <div class="col-md-2">
                 <a href="{{ route('posts.create') }}" class="btn btn-lg btn-block btn-primary btn-h1-spacing">Create New Post</a>
             </div>
+        </div>
 
             <div class="col-md-12">
                 <hr>
@@ -22,6 +23,7 @@
                         <th>Title</th>
                         <th>Slug</th>
                         <th>Body</th>
+                        <th>Category</th>
                         <th>Created at</th>
                         <th></th>
                     </thead>
@@ -35,6 +37,7 @@
                                 <td>{{ $post->title }}</td>
                                 <td>{{ $post->slug }}</td>
                                 <td>{{ substr($post->body,0,50) }}{{ strlen($post->body) >50 ? "..." : "" }}</td>
+                                <td>{{ $post->category->name }}</td>
                                 <td>{{ date('M j, Y h:ia',strtotime($post->created_at)) }}</td>
                                 <td><a href="{{ route('posts.show',$post->id) }}" class="btn btn-default">View</a> <a href="{{ route('posts.edit',$post->id) }}" class="btn btn-default">Edit</a></td>
                             </tr>
@@ -48,7 +51,5 @@
                     {!! $posts->links() !!}
                 </div>
             </div>
-
-        </div>
 
 @stop
