@@ -22,4 +22,6 @@ Route::group(['middleware'=>['web']],function (){
     Route::get('contact','PageController@getContact');
     Route::resource('posts','PostController');
     Route::resource('categories','CategoryController');
+
+    Route::get('exportCategory','CategoryController@exportCategory')-> name('exportCategory');
 });

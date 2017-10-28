@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Session;
 
 class CategoryController extends Controller
@@ -21,12 +22,12 @@ class CategoryController extends Controller
         return response()->json(array('data'=> $categories));
     }
 
-    public function getUpdatedata(Request $request){
+    public function getCategoryData(Request $request){
 
         if ($request -> ajax())
         {
             $category=Category::find($request->id);
-            return response($category);
+            return response()->json($category);
         }
 
     }
@@ -35,7 +36,7 @@ class CategoryController extends Controller
 
         if ($request -> ajax())
         {
-            $category = Category::find($request->id);
+            $category = Category::find($request->category_id);
             $category->name = $request->category_name;
             $category->save();
             return response($category);
@@ -61,6 +62,18 @@ class CategoryController extends Controller
             $category->delete();
             return response()->json(['data' => 'Category has been deleted with successfully!']);
         }
+
+    }
+
+    public function exportCategory(){
+
+        $categories = Category::orderBy('name','asc')->get();
+
+        return Excel::create('data_category',function ($excel) use ($categories){
+            $excel->sheet('mysheet', function ($sheet) use ($categories){
+                $sheet->fromArray($categories);
+            });
+        })->download('xlsx');
 
     }
 

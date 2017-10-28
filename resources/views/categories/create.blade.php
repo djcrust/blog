@@ -12,6 +12,8 @@
 
                     <input type="hidden" name="_token" value="{{ csrf_token() }}" >
 
+                    <input type="hidden" name="category_id" id="category_id">
+
                     <div class="form-group">
                         <label>Name:</label>
                         <input type="text" name="category_name" id="category_name" class="form-control" required="required">
@@ -19,7 +21,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success">Create</button>
+                        <button type="submit" class="btn btn-success" id="btn-modal_create">Create</button>
                     </div>
 
                 </form>

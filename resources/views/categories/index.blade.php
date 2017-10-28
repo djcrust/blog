@@ -10,8 +10,8 @@
             <div class="panel-heading">
                 <h3 class="panel-title">Categories</h3>
                 <div class="pull-right">
-                    <button class="btn btn-default btn-create"><span class="glyphicon glyphicon-refresh"></span> Refresh</button>
-                    <button class="btn btn-default btn-create"><span class="glyphicon glyphicon-export"></span> Export Excel</button>
+                    <button class="btn btn-default btn-create" id="btn_refresh"><span class="glyphicon glyphicon-refresh"></span> Refresh</button>
+                    <a href="{{ route('exportCategory') }}" class="btn btn-default btn-create"><span class="glyphicon glyphicon-export"></span> Export Excel</a>
                     <button class="btn btn-default btn-create" id="btn_create"><span class="glyphicon glyphicon-new-window"></span> Create</button>
                 </div>
             </div>
@@ -20,7 +20,7 @@
 
                 @include('categories.create')
 
-                <table class="table table-hover" id ="table_data">
+                <table class="table table-condensed table-hover" id ="table_data">
                     <thead>
                     <tr>
                         <th>#</th>
@@ -40,8 +40,8 @@
                             <td>{{ $category->created_at }}</td>
                             <td>{{ $category->updated_at }}</td>
                             <td>
-                                <button class="btn btn-default btn-edit" data-id="{{ $category->id }}">Edit</button>
-                                <button class="btn btn-danger btn-delete" data-id="{{ $category->id }}">Delete</button>
+                                <button class="btn btn-default btn-edit" data-id="{{ $category->id }}"><span class="glyphicon glyphicon-edit"></span> Edit</button>
+                                <button class="btn btn-danger btn-delete" data-id="{{ $category->id }}"><span class="glyphicon glyphicon-remove"></span> Delete</button>
                             </td>
                         </tr>
                     @endforeach
@@ -77,35 +77,53 @@
 
 
         $('#btn_create').on('click',function() {
-
             $('#category_name').val('');
+            $('#category_id').val('0');
+            $('#btn-modal_create').text('Create');
+            $('.modal-title').text('Create new Category');
+            $('#frmCategory').trigger('reset');
+            $('#modal_category').modal('show');
 
-           $('#modal_category').modal('show');
-
-           $('#modal_category').on('shown.bs.modal',function () {
+            $('#modal_category').on('shown.bs.modal',function () {
                $('#category_name').focus();
            })
 
         })
 
-        $('.btn-edit').on('click',function () {
-            //alert($(this).data('id'));
+        $('tbody').delegate('.btn-edit','click',function () {
             //alert($(this).closest('tr').attr('id'));
-        })
-
-        $('.btn-delete').on('click',function () {
             var nid = $(this).data('id');
-            var $tr = $(this).closest('tr');
             $.ajax({
-                type: 'POST',
-                url: 'api/deleteCategory',
-                data:{id:nid},
-                success:function (data) {
-                    $tr.find('td,th').fadeOut(1000,function () {
-                        $tr.remove;
-                    })
+                type: 'GET',
+                url: 'api/getCategoryData',
+                data: {id:nid},
+                success:function (response) {
+                    $('#btn-modal_create').text('Update');
+                    $('.modal-title').text('Update Category');
+                    $('#category_id').val(response.id);
+                    $('#category_name').val(response.name);
+                    $('#modal_category').modal('show');
+
+
                 }
             })
+        })
+
+        $('tbody').delegate('.btn-delete','click',function () {
+            var nid = $(this).data('id');
+            var $tr = $(this).closest('tr');
+            if(confirm('Are you sure to delete this record?')==true){
+                $.ajax({
+                    type: 'POST',
+                    url: 'api/deleteCategory',
+                    data:{id:nid},
+                    success:function (data) {
+                        $tr.find('td,th').fadeOut(1000,function () {
+                            $tr.remove;
+                        })
+                    }
+                })
+            }
 
         })
 
@@ -113,9 +131,16 @@
             event.preventDefault();
             var form = $('#frmCategory');
             var formdata = form.serialize();
+
+            if($('#category_id').val() == 0) {
+                var new_url = 'api/createCategory';
+            }else{
+                var new_url = 'api/newUpdatedata';
+            };
+
             $.ajax({
                 type:'POST',
-                url: 'api/createCategory',
+                url: new_url,
                 async: true,
                 data : formdata,
                 datatype : 'json',
@@ -131,17 +156,21 @@
             })
         })
 
-        submit = function () {
-            $.ajax({
-                url: 'api/getSavedata',
-                type: 'POST',
-                data: {category_id:$('#category_id').val(),name:$('#name').val()},
-                success : function(response) {
-                    load_data();
-                }
+//        submit = function () {
+//            $.ajax({
+//                url: 'api/getSavedata',
+//                type: 'POST',
+//                data: {category_id:$('#category_id').val(),name:$('#name').val()},
+//                success : function(response) {
+//                    load_data();
+//                }
+//
+//            });
+//        }
 
-            });
-        }
+        $('#btn_refresh').on('click',function() {
+            load_data();
+        })
 
         load_data = function () {
             $.ajax({
@@ -165,8 +194,8 @@
                             '<td>' + data[i].name + '</td>' +
                             '<td>' + data[i].created_at + '</td>' +
                             '<td>' + data[i].updated_at + '</td>' +
-                            '<td><button class="btn btn-default" data-id=' + data[i].id +'>Edit</button>' +
-                            '<button class="btn btn-danger" data-id=' + data[i].id + '>Delete</button></td>' +
+                            '<td><button class="btn btn-default btn-edit" data-id="' + data[i].id +'"><span class="glyphicon glyphicon-edit"></span> Edit</button>&nbsp;' +
+                            '<button class="btn btn-danger btn-delete" data-id="' + data[i].id + '"><span class="glyphicon glyphicon-remove"></span> Delete</button></td>' +
                             '<tr>');
 
                     }
