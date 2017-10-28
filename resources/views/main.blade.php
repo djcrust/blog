@@ -16,6 +16,8 @@
 
         @yield('content')
 
+        @include('partials._spinner')
+
     @include('partials._footer')
 
     </div>

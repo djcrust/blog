@@ -12,14 +12,21 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = Category::orderBy('name','asc')->get();
+        $categories = Category::orderBy('name','asc')->paginate(env('PER_PAGE'));
         return view('categories.index', compact('categories'));
     }
+
+    public function readData()
+    {
+        $categories = Category::orderBy('name','asc')->paginate(env('PER_PAGE'));
+        return view('categories.detailsList', compact('categories'));
+    }
+
 
     public function getListcategory()
     {
         $categories = Category::orderBy('name','asc')->get();
-        return response()->json(array('data'=> $categories));
+        //return response()->json(array('data'=> $categories));
     }
 
     public function getCategoryData(Request $request){
@@ -77,5 +84,16 @@ class CategoryController extends Controller
 
     }
 
+    public function findCategoryPage()
+    {
+        $categories = Category::orderBy('name','asc')->paginate(5);
+    }
+
+    public function paginateCategory()
+    {
+        $categories = $this-> findCategoryPage();
+
+        return view('categories.paginate', compact('categories'));
+    }
 
 }

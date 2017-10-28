@@ -33,25 +33,11 @@
 
                     <tbody id="cat_list">
 
-                    @foreach($categories as $category)
-                        <tr id = "{{ $category->id }}">
-                            <th>{{ $category->id }}</th>
-                            <td>{{ $category->name }}</td>
-                            <td>{{ $category->created_at }}</td>
-                            <td>{{ $category->updated_at }}</td>
-                            <td>
-                                <button class="btn btn-default btn-edit" data-id="{{ $category->id }}"><span class="glyphicon glyphicon-edit"></span> Edit</button>
-                                <button class="btn btn-danger btn-delete" data-id="{{ $category->id }}"><span class="glyphicon glyphicon-remove"></span> Delete</button>
-                            </td>
-                        </tr>
-                    @endforeach
-
 
                     </tbody>
                 </table>
 
-
-
+                {!! $categories->render() !!}
 
             </div>
 
@@ -88,7 +74,7 @@
                $('#category_name').focus();
            })
 
-        })
+        });
 
         $('tbody').delegate('.btn-edit','click',function () {
             //alert($(this).closest('tr').attr('id'));
@@ -107,7 +93,7 @@
 
                 }
             })
-        })
+        });
 
         $('tbody').delegate('.btn-delete','click',function () {
             var nid = $(this).data('id');
@@ -125,7 +111,7 @@
                 })
             }
 
-        })
+        });
 
         $('#frmCategory').submit(function(event) {
             event.preventDefault();
@@ -146,7 +132,7 @@
                 datatype : 'json',
                 success:function (data) {
 
-                    load_data();
+                    read_data();
 
                     $('#frmCategory').trigger('reset');
 
@@ -154,7 +140,7 @@
 
                 }
             })
-        })
+        });
 
 //        submit = function () {
 //            $.ajax({
@@ -169,8 +155,27 @@
 //        }
 
         $('#btn_refresh').on('click',function() {
-            load_data();
-        })
+
+            read_data();
+
+        });
+
+        read_data = function () {
+            var url = '{{ URL::to('readData')}}';
+            $.ajax({
+               url:url,
+                beforeSend:function(data) {
+                    $('.animationload').show();
+                },
+                complete:function(data){
+                    $('.animationload').hide();
+                },
+                success:function (data) {
+                    $('#cat_list').empty().html(data);
+                }
+            });
+
+        };
 
         load_data = function () {
             $.ajax({
@@ -201,7 +206,13 @@
                     }
                 }
             });
-        }
+        };
+
+        $(document).ready(function () {
+
+            read_data();
+
+        });
 
     </script>
 

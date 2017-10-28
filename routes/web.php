@@ -24,4 +24,6 @@ Route::group(['middleware'=>['web']],function (){
     Route::resource('categories','CategoryController');
 
     Route::get('exportCategory','CategoryController@exportCategory')-> name('exportCategory');
+    Route::get('readData','CategoryController@readData');
+    Route::get('paginateCategory','CategoryController@paginateCategory')-> name('paginateCategory');
 });
